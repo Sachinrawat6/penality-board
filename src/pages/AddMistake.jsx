@@ -10,6 +10,7 @@ const AddMistake = () => {
     name: '',
     mistake: '',
     mistake_image: '',
+    mistake_date: '',
   });
 
   const { adding, addMistakeToPenaltyBoard } = useAddMistake();
@@ -29,7 +30,7 @@ const AddMistake = () => {
       await addMistakeToPenaltyBoard(form);
 
       setSuccess(`Mistake added for ${form.name.trim()}.`);
-      setForm({ name: '', mistake: '', mistake_image: '' });
+      setForm({ name: '', mistake: '', mistake_image: '', mistake_date: '' });
     } catch (err) {
       setError(err?.message || 'Failed to add mistake.');
     }

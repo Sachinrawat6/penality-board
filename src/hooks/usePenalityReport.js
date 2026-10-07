@@ -1,35 +1,21 @@
 import { useCallback, useState } from 'react';
-import { getPenalityReport } from '../services/penalityBoard.service';
-
+import { getPenalityReport } from '../services/penalityBoard.service.js';
 export const usePenalityReport = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [penalityData, setPenalityData] = useState({
-    employees: [],
-    allMistakes: 0,
-  });
-
+  const [penalityData, setPenalityData] = useState({ employees: [], allMistakes: 0 });
   const fetchPenalityReport = useCallback(async (from, to) => {
     try {
       setLoading(true);
       setError(null);
-
       const response = await getPenalityReport(from, to);
-      const payload = response?.data?.data[0];
-
-      let employees = [];
-      let allMistakes = 0;
-
-      if (Array.isArray(payload)) {
-        employees = payload;
-        allMistakes = payload.reduce((sum, item) => sum + Number(item.totalMistakes || 0), 0);
-      } else {
-        employees = Array.isArray(payload?.employees) ? payload.employees : [];
-        allMistakes = Number(payload?.allMistakes || 0);
-      }
-
-      setPenalityData({ employees, allMistakes });
-      return { employees, allMistakes };
+      /** * Backend response: * * { * statusCode: 200, * data: { * allMistakes: 10, * employees: [...] * }, * message: "Mistake report fetched successfully" * } */ const payload =
+        response?.data?.data;
+      const employees = Array.isArray(payload?.employees) ? payload.employees : [];
+      const allMistakes = Number(payload?.allMistakes || 0);
+      const result = { employees, allMistakes };
+      setPenalityData(result);
+      return result;
     } catch (err) {
       const message =
         err?.response?.data?.message ||
@@ -43,11 +29,5 @@ export const usePenalityReport = () => {
       setLoading(false);
     }
   }, []);
-
-  return {
-    loading,
-    error,
-    penalityData,
-    fetchPenalityReport,
-  };
+  return { loading, error, penalityData, fetchPenalityReport };
 };

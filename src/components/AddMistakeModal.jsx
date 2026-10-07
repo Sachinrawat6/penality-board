@@ -1,4 +1,4 @@
-import { AlertCircle, Check, ImagePlus, Loader2, UserRound, X } from 'lucide-react';
+import { AlertCircle, Calendar, Check, ImagePlus, Loader2, UserRound, X } from 'lucide-react';
 import { Field } from './Field';
 
 export function AddMistakeModal({ form, setForm, loading, onClose, onSubmit }) {
@@ -46,6 +46,14 @@ export function AddMistakeModal({ form, setForm, loading, onClose, onSubmit }) {
             value={form.mistake}
             onChange={(value) => setForm((current) => ({ ...current, mistake: value }))}
             icon={<AlertCircle size={17} />}
+            required
+          />
+          <Field
+            label="Mistake Date"
+            value={form.mistake_date}
+            type="date"
+            onChange={(value) => setForm((current) => ({ ...current, mistake_date: value }))}
+            icon={<Calendar size={17} />}
             required
           />
 
